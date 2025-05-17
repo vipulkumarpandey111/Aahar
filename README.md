@@ -54,15 +54,27 @@ It begins as a monolithic architecture to ensure clarity and learning, and is st
 
 ## 📦 Project Structure
 
-src/
-└── main/
-├── java/org/example/
-│ ├── controller/
-│ │ └── HealthController.java
-│ ├── entity/
-│ │ └── UserProfile.java
-│ ├── repository/
-│ │ └── UserProfileRepository.java
-│ └── AaharApplication.java
-└── resources/
-└── application.properties
+src/main/java/org/example/
+├── config/
+│   └── DatabaseConfig.java
+├── controller/
+│   ├── UserProfileController.java
+│   └── MealPlanController.java
+├── dto/
+│   ├── UserProfileRequestDTO.java
+│   ├── MealPlanResponseDTO.java
+├── entity/
+│   ├── UserProfile.java
+│   └── MealPlan.java
+├── exception/
+│   └── GlobalExceptionHandler.java
+├── repository/
+│   ├── UserProfileRepository.java
+│   └── MealPlanRepository.java
+├── service/
+│   ├── UserProfileService.java
+│   ├── MealPlanService.java
+│   └── impl/
+│       ├── UserProfileServiceImpl.java
+│       └── MealPlanServiceImpl.java
+└── AaharApplication.java
