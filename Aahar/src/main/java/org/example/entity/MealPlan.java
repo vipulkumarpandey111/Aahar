@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "meal_plans")
 @Getter
+@Setter
 public class MealPlan {
     @Id
     @GeneratedValue
@@ -18,11 +19,6 @@ public class MealPlan {
     private String dinner;
     @Column(name = "suggested_budget")
     private int suggestedBudget;
-
-    @OneToOne
-    @Setter
-    @JoinColumn(name = "user_id")
-    private UserProfile user;
 
     public MealPlan() {}
 

@@ -1,9 +1,9 @@
 package org.example.service;
 
-import org.example.dto.UserProfileRequestDTO;
-import org.example.entity.MealPlan;
+import org.example.dto.*;
+import org.example.entity.*;
 
 public interface UserProfileService {
-    MealPlan createUserWithMealSuggestion(UserProfileRequestDTO dto);
+    UserProfile createUser(UserProfileRequestDTO dto);
 }
 

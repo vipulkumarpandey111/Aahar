@@ -2,10 +2,11 @@ package org.example.repository;
 
 import org.example.entity.MealPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.*;
 
+@Repository
 public interface MealPlanRepository extends JpaRepository<MealPlan, Long> {
-    Optional<MealPlan> findFirstByRegionAndFoodPreference(String region, String foodPreference);
-    Optional<MealPlan> findByUserId(Long userId);
+    List<MealPlan> findByRegionAndFoodPreference(String region, String foodPreference);
 }
