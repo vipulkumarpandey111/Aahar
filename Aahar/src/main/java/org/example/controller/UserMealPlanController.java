@@ -15,7 +15,7 @@ public class UserMealPlanController {
 
     @Autowired private UserMealPlanService userMealPlanService;
 
-    @PostMapping
+    @PostMapping("/generate")
     public ResponseEntity<MealPlanResponseDTO> generate(
             @RequestBody MealPlanRequestDTO request) {
         MealPlanResponseDTO resp = userMealPlanService.generateAndSave(request);
