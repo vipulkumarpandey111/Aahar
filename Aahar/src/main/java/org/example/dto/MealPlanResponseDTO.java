@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Setter
 public class MealPlanResponseDTO {
     private Long planId;
-    private Long mealId;
     private String breakfast;
     private String lunch;
     private String dinner;

@@ -1,6 +1,8 @@
 package org.example.service;
 
 import jakarta.persistence.*;
+import org.springframework.cache.annotation.Cacheable;
+import org.example.ai.MealPlanGenerator;
 import org.example.dto.*;
 import org.example.entity.*;
 import org.example.mapper.UserMealPlanResponseMapper;
@@ -14,46 +16,73 @@ import java.util.stream.Collectors;
 @Service
 public class UserMealPlanService {
 
-    @Autowired
-    private MealPlanRepository mealRepo;
+    @Autowired private MealPlanGenerator generator;
+    @Autowired private MealPlanRepository mealRepo;
     @Autowired private UserProfileRepository userRepo;
     @Autowired private UserMealPlanRepository userMealRepo;
 
-    private static final MealPlan DEFAULT_PLAN = createDefaultPlan();
-
+    @Cacheable(value = "aiMealPlans", key = "#req.region+'|'+#req.foodPreference+'|'+#req.budget")
     public MealPlanResponseDTO generateAndSave(MealPlanRequestDTO req) {
-        // 1. Fetch user
         UserProfile user = userRepo.findById(req.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        // 2. Filter master meal plans
-        List<MealPlan> candidates = mealRepo.findByRegionAndFoodPreference(
-                req.getRegion(), req.getFoodPreference());
+        // 1. Try AI generation
+        MealPlanResponseDTO aiResponse = generator.generate(req);
 
-        // 3. Budget filter
-        MealPlan selected = candidates.stream()
-                .filter(p -> req.getBudget() == null || p.getSuggestedBudget() <= req.getBudget())
-                .findAny()
-                .orElse(DEFAULT_PLAN);
+        MealPlanResponseDTO finalPlan;
+        boolean fromAI = (aiResponse != null
+                && aiResponse.getBreakfast() != null
+                && aiResponse.getLunch()    != null
+                && aiResponse.getDinner()   != null);
 
-        // 4. Save mapping
-        UserMealPlan ump = new UserMealPlan(user, selected);
+        if (fromAI) {
+            finalPlan = aiResponse;
+            // 2a. Backup new AI-generated plan into meal_plans
+            MealPlan backup = new MealPlan();
+            backup.setRegion(req.getRegion());
+            backup.setFoodPreference(req.getFoodPreference());
+            backup.setBreakfast(aiResponse.getBreakfast());
+            backup.setLunch(aiResponse.getLunch());
+            backup.setDinner(aiResponse.getDinner());
+            backup.setSuggestedBudget(aiResponse.getCost());
+            mealRepo.save(backup);
+        } else {
+            // 2b. Fallback to static DB lookup
+            List<MealPlan> list = mealRepo
+                    .findByRegionAndFoodPreference(req.getRegion(), req.getFoodPreference());
+            if (!list.isEmpty()) {
+                MealPlan mp = list.get(0);
+                finalPlan = new MealPlanResponseDTO();
+                finalPlan.setBreakfast(mp.getBreakfast());
+                finalPlan.setLunch(mp.getLunch());
+                finalPlan.setDinner(mp.getDinner());
+                finalPlan.setCost(mp.getSuggestedBudget());
+            } else {
+                // Last-resort default
+                finalPlan = defaultResponse(req);
+            }
+        }
+
+        // 3. Persist per-user record with embedded fields
+        UserMealPlan ump = new UserMealPlan(
+                user,
+                finalPlan.getBreakfast(),
+                finalPlan.getLunch(),
+                finalPlan.getDinner(),
+                finalPlan.getCost()
+        );
         userMealRepo.save(ump);
 
-        // 5. Return DTO
-        MealPlanResponseDTO resp = UserMealPlanResponseMapper.toDto(ump);
-        return resp;
+        return finalPlan;
     }
 
-    private static MealPlan createDefaultPlan() {
-        MealPlan p = new MealPlan();
-        p.setRegion("Default");
-        p.setFoodPreference("Veg");
-        p.setBreakfast("Oats & Fruits");
-        p.setLunch("Khichdi");
-        p.setDinner("Soup & Salad");
-        p.setSuggestedBudget(50);
-        return p;
+    private MealPlanResponseDTO defaultResponse(MealPlanRequestDTO r) {
+        MealPlanResponseDTO d = new MealPlanResponseDTO();
+        d.setBreakfast("Oats & Fruits");
+        d.setLunch("Khichdi");
+        d.setDinner("Soup & Salad");
+        d.setCost(r.getBudget() != null ? r.getBudget() : 100);
+        return d;
     }
 
     public List<MealPlanResponseDTO> findByUser(Long userId) {

@@ -1,9 +1,8 @@
 package org.example.service;
 
-import org.example.dto.UserProfileRequestDTO;
+import org.example.dto.*;
 import org.example.entity.UserProfile;
-import org.example.repository.MealPlanRepository;
-import org.example.repository.UserProfileRepository;
+import org.example.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

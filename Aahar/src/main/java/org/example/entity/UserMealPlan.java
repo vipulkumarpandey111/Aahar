@@ -16,18 +16,25 @@ public class UserMealPlan {
     @JoinColumn(name = "user_id")
     private UserProfile user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "meal_plan_id")
-    private MealPlan mealPlan;
+    // Embedded meal details
+    private String breakfast;
+    private String lunch;
+    private String dinner;
+    private int suggestedBudget;
 
     private LocalDateTime generatedAt = LocalDateTime.now();
 
-    // Constructors
     public UserMealPlan() {}
-    public UserMealPlan(UserProfile user, MealPlan mealPlan) {
-        this.user = user;
-        this.mealPlan = mealPlan;
-    }
 
-    // Getters/setters
+    public UserMealPlan(UserProfile user,
+                        String breakfast,
+                        String lunch,
+                        String dinner,
+                        int suggestedBudget) {
+        this.user = user;
+        this.breakfast = breakfast;
+        this.lunch = lunch;
+        this.dinner = dinner;
+        this.suggestedBudget = suggestedBudget;
+    }
 }
