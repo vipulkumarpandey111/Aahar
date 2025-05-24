@@ -54,18 +54,49 @@ It begins as a monolithic architecture to ensure clarity and learning, and is st
 
 ## 📦 Project Structure
 
-Aahar/
+Project Root/
+├── .git/
+├── .idea/
+├── README.md
+└── Aahar/
 ├── src/
-│   └── main/
-│       └── java/
-│           └── org/
-│               └── example/
-│                   ├── AaharApplication.java
-│                   ├── controller/
-│                   ├── dto/
-│                   ├── entity/
-│                   ├── mapper/
-│                   ├── repository/
-│                   └── service/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── org.example/
+│   │   │       ├── ai/
+│   │   │       │   ├── HFMealPlanGenerator
+│   │   │       │   └── MealPlanGenerator
+│   │   │       ├── config/
+│   │   │       │   ├── AiConfig
+│   │   │       │   └── RedisConfig
+│   │   │       ├── controller/
+│   │   │       │   ├── csvDataIngestion/
+│   │   │       │   ├── HealthController
+│   │   │       │   ├── UserMealPlanController
+│   │   │       │   └── UserProfileController
+│   │   │       ├── dto/
+│   │   │       │   ├── MealPlanRequestDTO
+│   │   │       │   ├── MealPlanResponseDTO
+│   │   │       │   └── UserProfileRequestDTO
+│   │   │       ├── entity/
+│   │   │       │   ├── MealPlan
+│   │   │       │   ├── UserMealPlan
+│   │   │       │   └── UserProfile
+│   │   │       ├── mapper/
+│   │   │       │   └── UserMealPlanResponseMapper
+│   │   │       ├── repository/
+│   │   │       │   ├── MealPlanRepository
+│   │   │       │   ├── UserMealPlanRepository
+│   │   │       │   └── UserProfileRepository
+│   │   │       ├── service/
+│   │   │       │   ├── UserMealPlanService
+│   │   │       │   ├── UserProfileService
+│   │   │       │   └── UserProfileServiceImpl
+│   │   │       └── AaharApplication
+│   │   └── resources/
+│   │       └── application.yml
+│   └── test/
+├── target/
+├── .idea/
 ├── pom.xml
-└── README.md
+└── .gitignore
