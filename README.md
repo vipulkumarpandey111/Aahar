@@ -25,17 +25,24 @@ It begins as a monolithic architecture to ensure clarity and learning, and is st
 
 ---
 
-## 🚀 Features (Phase 1 - MVP)
-- User profile creation with:
-    - Name
-    - Region (state/area)
-    - Food preference
-- Health check endpoint
-- PostgreSQL database integration
-- Spring Boot backend setup
-- REST API for creating user profiles
+## Features
+- 🍽️ AI-powered meal plan generation
+- 👤 User profile management
+- 🌍 Region-specific meal recommendations
+- 🥗 Dietary preference support
+- 📊 CSV data ingestion capabilities
+- 💾 Redis caching for improved performance
+- 🔄 RESTful API endpoints
+- 🏥 Health monitoring endpoints
 
----
+## Technology Stack
+- **Framework:** Spring Boot
+- **Language:** Java 21
+- **Database:** JPA/Hibernate
+- **Caching:** Redis
+- **AI Integration:** Hugging Face
+- **Build Tool:** Maven
+
 
 ## 🛠️ Tech Stack
 
@@ -100,3 +107,46 @@ Project Root/
 ├── .idea/
 ├── pom.xml
 └── .gitignore
+
+## API Documentation
+
+### User Profile Management
+- **Create User Profile**
+  - `POST /api/users/profile`
+  - Creates a new user profile with dietary preferences
+
+- **Get User Profile**
+  - `GET /api/users/profile/{userId}`
+  - Retrieves user profile information
+
+### Meal Plan Management
+- **Generate Meal Plan**
+  - `POST /api/mealplan/generate`
+  - Generates personalized meal plans based on user preferences
+
+- **Get User Meal Plan**
+  - `GET /api/mealplan/user/{userId}`
+  - Retrieves existing meal plans for a user
+
+### Health Check
+- **System Health**
+  - `GET /health`
+  - Monitors system health and dependencies
+
+### Data Ingestion
+- **CSV Import**
+  - `POST /api/data/import`
+  - Imports meal data through CSV files
+
+## Caching Strategy
+- Redis cache implementation with 30-minute TTL
+- Caches frequently accessed meal plans and user profiles
+- Configurable cache settings in RedisConfig
+
+## AI Integration
+- Utilizes Hugging Face models for meal plan generation
+- Considers:
+  - Regional preferences
+  - Dietary restrictions
+  - Nutritional requirements
+  - User preferences
