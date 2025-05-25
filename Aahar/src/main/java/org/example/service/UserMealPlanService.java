@@ -44,7 +44,7 @@ public class UserMealPlanService {
             backup.setBreakfast(aiResponse.getBreakfast());
             backup.setLunch(aiResponse.getLunch());
             backup.setDinner(aiResponse.getDinner());
-            backup.setSuggestedBudget(aiResponse.getCost());
+            backup.setSuggestedBudget(aiResponse.getEstimatedBudget());
             mealRepo.save(backup);
         } else {
             // 2b. Fallback to static DB lookup
@@ -56,7 +56,7 @@ public class UserMealPlanService {
                 finalPlan.setBreakfast(mp.getBreakfast());
                 finalPlan.setLunch(mp.getLunch());
                 finalPlan.setDinner(mp.getDinner());
-                finalPlan.setCost(mp.getSuggestedBudget());
+                finalPlan.setEstimatedBudget(mp.getSuggestedBudget());
             } else {
                 // Last-resort default
                 finalPlan = defaultResponse(req);
@@ -69,7 +69,7 @@ public class UserMealPlanService {
                 finalPlan.getBreakfast(),
                 finalPlan.getLunch(),
                 finalPlan.getDinner(),
-                finalPlan.getCost()
+                finalPlan.getEstimatedBudget()
         );
         userMealRepo.save(ump);
 
@@ -81,7 +81,7 @@ public class UserMealPlanService {
         d.setBreakfast("Oats & Fruits");
         d.setLunch("Khichdi");
         d.setDinner("Soup & Salad");
-        d.setCost(r.getBudget() != null ? r.getBudget() : 100);
+        d.setEstimatedBudget(r.getBudget() != null ? r.getBudget() : 100);
         return d;
     }
 

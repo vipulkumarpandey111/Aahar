@@ -10,7 +10,7 @@ public class UserMealPlanResponseMapper {
         dto.setBreakfast(mealPlan.getBreakfast());
         dto.setLunch(mealPlan.getLunch());
         dto.setDinner(mealPlan.getDinner());
-        dto.setCost(mealPlan.getSuggestedBudget());
+        dto.setEstimatedBudget(mealPlan.getSuggestedBudget());
         dto.setUserId(mealPlan.getUser().getId());
 
         return dto;

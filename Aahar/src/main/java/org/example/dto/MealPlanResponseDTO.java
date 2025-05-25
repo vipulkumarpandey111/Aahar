@@ -11,7 +11,7 @@ public class MealPlanResponseDTO {
     private String breakfast;
     private String lunch;
     private String dinner;
-    private int cost;
+    private int estimatedBudget;
     private LocalDateTime generatedAt;
     private Long userId;
     private String region;

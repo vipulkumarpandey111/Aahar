@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.time.Duration;
-
 @Configuration
 public class AiConfig {
     @Value("${huggingface.api.token}")
@@ -15,8 +13,9 @@ public class AiConfig {
     @Bean
     public WebClient hfClient() {
         return WebClient.builder()
-                .baseUrl("https://api-inference.huggingface.co/models/google/flan-t5-small")
+                .baseUrl("https://router.huggingface.co/sambanova/v1/chat/completions")
                 .defaultHeader("Authorization", "Bearer " + hfToken)
+                .defaultHeader("Content-Type", "application/json")
                 .build();
     }
 }
