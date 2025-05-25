@@ -16,7 +16,7 @@ spring:
 
 huggingface:
   api:
-    token: "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"
+    token: ""
 
 server:
   port: 8080
